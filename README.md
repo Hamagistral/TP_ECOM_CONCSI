@@ -1,10 +1,12 @@
 ## TP: Projet Conception SI Site E-commerce
 
-### Description du Projet
+### 🎯 Description du Projet
 
 Application de e-commerce en ligne de commande permettant la gestion de comptes clients, marchands, administrateurs, ainsi que les commandes et produits, inspirée du modèle Amazon.
 
-### Structure du Projet
+![app](https://alpha-gamer.com/cdn/shop/files/gaming_setup.png?v=1718151964&width=1840)
+
+### 📝 Structure du Projet
 
 ```
 ├── src/
@@ -30,7 +32,13 @@ Application de e-commerce en ligne de commande permettant la gestion de comptes 
 └── requirements.txt        # Dépendances du projet
 ```
 
-### Dépendances
+### 🛠️ Technologies
+
+- **Python**
+- **Rich Console**
+- **Pytest**
+- **UML et OCL**
+- **JSON pour les données**
 
 ```python
 rich==13.9.4      # Interface console améliorée
@@ -67,7 +75,7 @@ pytest tests/test_client.py  # Tests spécifiques
 pytest -v          # Mode verbeux
 ```
 
-### Description des Classes
+### 🕵️ Description des Classes
 
 **User**: Classe de base pour tous les utilisateurs
 
@@ -98,7 +106,7 @@ pytest -v          # Mode verbeux
 - **Attributs :** users, current_user
 - **Méthodes :** register_user(), login(), save_data(), load_data()
 
-### Structure des Données (data.json)
+### 🔬 Structure des Données (data.json)
 
 ```json
 {
@@ -126,7 +134,7 @@ pytest -v          # Mode verbeux
 }
 ```
 
-### Tests
+### 🧪 Tests
 
 Les tests sont organisés par classe et couvrent :
 
@@ -136,7 +144,7 @@ Les tests sont organisés par classe et couvrent :
 - Gestion des produits
 - Persistance des données
 
-### Fonctionnalités Principales
+### ⚙️ Fonctionnalités Principales
 
 - Client
     - Création de compte
