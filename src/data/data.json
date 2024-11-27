@@ -9,9 +9,7 @@
             "adresse": "Jean-Jaures, Toulouse 31500",
             "balance": 0.0,
             "carte_bancaire": null,
-            "type": "admin",
-            "products": [],
-            "commandes_recues": []
+            "type": "admin"
         },
         {
             "email": "hamza@gmail.com",
@@ -22,7 +20,7 @@
             "adresse": "Montaudran, Toulouse 31400",
             "balance": 501.0,
             "carte_bancaire": {
-                "numero": "2147",
+                "numero": "9874",
                 "date_exp": "09/28"
             },
             "type": "client",
@@ -32,7 +30,7 @@
                     "id": "CMD1",
                     "date": "2024-11-14 10:49:52",
                     "total": 1499.0,
-                    "status": "en_attente",
+                    "status": "livr\u00e9",
                     "client_email": "hamza@gmail.com",
                     "client_nom": "Hamza BELGHITI",
                     "montants_par_marchand": {
@@ -69,8 +67,15 @@
                     "nom": "Lenovo ThinkPad X1 Carbon Gen 11 (14\" Intel)",
                     "description": "Plateforme Intel\u00ae Evo\u2122 certifi\u00e9e avec processeur jusqu\u2019au mod\u00e8le Intel\u00ae Core\u2122 vPro\u00ae de 13e g\u00e9n\u00e9ration",
                     "prix": 1499.0,
-                    "quantite": 4,
+                    "quantite": 5,
                     "categorie": "Pc Portable"
+                },
+                {
+                    "nom": "ZOWIE FK1-C",
+                    "description": "Souris Esports sym\u00e9trique - Poids r\u00e9duit ; c\u00e2ble en paracorde ; scroll en 24 \u00e9tapes",
+                    "prix": 69.95,
+                    "quantite": 8.0,
+                    "categorie": "Souris Gamer"
                 }
             ],
             "commandes_recues": [
@@ -78,7 +83,7 @@
                     "id": "CMD1",
                     "date": "2024-11-14 10:49:52",
                     "total": 1499.0,
-                    "status": "en_attente",
+                    "status": "livr\u00e9",
                     "client_email": "hamza@gmail.com",
                     "client_nom": "Hamza BELGHITI",
                     "montants_par_marchand": {
@@ -117,6 +122,32 @@
                 }
             ],
             "commandes_recues": []
+        },
+        {
+            "email": "new@example.com",
+            "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+            "nom": "Test",
+            "prenom": "User",
+            "telephone": "0123456789",
+            "adresse": "123 Test Street",
+            "balance": 0.0,
+            "carte_bancaire": null,
+            "type": "client",
+            "panier": {},
+            "commandes": []
+        },
+        {
+            "email": "test@example.com",
+            "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+            "nom": "Test",
+            "prenom": "User",
+            "telephone": "0123456789",
+            "adresse": "123 Test Street",
+            "balance": 0.0,
+            "carte_bancaire": null,
+            "type": "client",
+            "panier": {},
+            "commandes": []
         }
     ]
 }

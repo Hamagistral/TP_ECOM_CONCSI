@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict, List, Optional
 from rich.table import Table
 from rich.prompt import Prompt
 
@@ -48,8 +47,8 @@ class User:
 class Client(User):
     def __init__(self, email: str, password: str, nom: str, prenom: str, telephone: str, adresse: str):
         super().__init__(email, password, nom, prenom, telephone, adresse)
-        self.panier = {}  # product_id: quantity
-        self.commandes = [] # Liste des commandes
+        self.panier = {}
+        self.commandes = []
 
     def add_to_cart(self, product, quantity):
         if product.quantite >= quantity:
@@ -115,11 +114,13 @@ class Client(User):
                     'quantity': quantity,
                     'subtotal': subtotal
                 })
+                
                 # Calculer le montant pour chaque marchand
                 if product.vendeur.email not in montants_par_marchand:
                     montants_par_marchand[product.vendeur.email] = 0
                 montants_par_marchand[product.vendeur.email] += subtotal
 
+        # Vérifier si le client a assez d'argent
         if total > self.balance:
             console.print(f"[red]Solde insuffisant. Total: {total}€, Balance: {self.balance}€")
             return
@@ -187,11 +188,36 @@ class Client(User):
         for cmd in self.commandes:
             table.add_row(
                 cmd['id'],
-                datetime.strptime(cmd['date'], '%Y-%m-%d %H:%M:%S.%f').strftime("%Y-%m-%d %H:%M"),
+                cmd['date'].strftime("%Y-%m-%d %H:%M"),
                 f"{cmd['total']}€",
                 cmd['status']
             )
         
+        console.print(table)
+        
+    def voir_details_commande(self, commande_id: str) -> None:
+        commande = next((cmd for cmd in self.commandes if cmd['id'] == commande_id), None)
+        if not commande:
+            console.print("[red]Commande non trouvée")
+            return
+
+        table = Table(title=f"Détails de la commande {commande_id}")
+        table.add_column("Produit")
+        table.add_column("Quantité")
+        table.add_column("Prix unitaire")
+        table.add_column("Total")
+        table.add_column("Status")
+        table.add_column("Retourné")
+
+        for detail in commande['details']:
+            table.add_row(
+                detail['product'].nom,
+                str(detail['quantity']),
+                f"{detail['product'].prix}€",
+                f"{detail['subtotal']}€",
+                commande['status'],
+                "Oui" if detail.get('retourne', False) else "Non"
+            )
         console.print(table)
 
 class Marchand(User):
@@ -237,7 +263,57 @@ class Marchand(User):
             )
         
         console.print(table)
+    def modify_product(self, product_id: str, **modifications):
+        """Modifier un produit existant"""
+        product = next((p for p in self.products if p.id == product_id), None)
         
+        if not product:
+            console.print("[red]Produit non trouvé")
+            return False
+            
+        valid_fields = ['nom', 'description', 'prix', 'quantite', 'categorie']
+        modified = False
+        
+        for field, value in modifications.items():
+            if field not in valid_fields:
+                continue
+                
+            if field == 'prix' and value <= 0:
+                console.print("[red]Le prix doit être positif")
+                continue
+                
+            if field == 'quantite' and value < 0:
+                console.print("[red]La quantité ne peut pas être négative")
+                continue
+                
+            setattr(product, field, value)
+            modified = True
+        
+        if modified:
+            console.print("[green]Produit modifié avec succès")
+        
+        return modified
+
+    def delete_product(self, product_id: str):
+        """Supprimer un produit"""
+        product = next((p for p in self.products if p.id == product_id), None)
+        
+        if not product:
+            console.print("[red]Produit non trouvé")
+            return False
+            
+        # Vérifier si le produit n'est pas dans des commandes en cours
+        for commande in self.commandes_recues:
+            if commande['status'] not in ['livré', 'annulé']:
+                for detail in commande['details']:
+                    if detail['product'].id == product_id:
+                        console.print("[red]Impossible de supprimer: produit dans une commande en cours")
+                        return False
+        
+        self.products.remove(product)
+        console.print("[green]Produit supprimé avec succès")
+        return True
+    
     def voir_commandes_recues(self):
         if not self.commandes_recues:
             console.print("[yellow]Vous n'avez pas de commandes reçues")
@@ -263,7 +339,7 @@ class Marchand(User):
                 table.add_row(
                     cmd['id'],
                     cmd['client_nom'],  # Utilisation du nom complet du client
-                    cmd['date'].strftime("%Y-%m-%d %H:%M:%S"),
+                    cmd['date'].strftime("%Y-%m-%d %H:%M"),
                     "\n".join(produits),
                     f"{total_marchand}€",
                     cmd['status']
@@ -296,6 +372,13 @@ class Marchand(User):
         choice = Prompt.ask("Choix", choices=list(status_options.keys()))
         nouveau_status = status_options[choice]
         ancien_status = commande['status']
+        
+        # Mettre à jour le statut dans la commande du client
+        client = store.get_user_by_email(commande['client_email'])
+        if client:
+            client_commande = next((cmd for cmd in client.commandes if cmd['id'] == cmd_id), None)
+            if client_commande:
+                client_commande['status'] = nouveau_status
         
         # Si on annule la commande
         if nouveau_status == "annulé" and ancien_status != "annulé":
@@ -388,7 +471,7 @@ class Marchand(User):
                     console.print("[red]La quantité doit être positive")
         except ValueError:
             console.print("[red]Veuillez entrer un nombre valide")
-
+            
 class Admin(User):
     def __init__(self, email: str, password: str, nom: str, prenom: str, telephone: str, adresse: str):
         super().__init__(email, password, nom, prenom, telephone, adresse)

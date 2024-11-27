@@ -3,24 +3,20 @@ import json
 from pathlib import Path
 from datetime import datetime
 from rich.prompt import Prompt
+from rich.table import Table
 from typing import Optional, Dict
 
 from ..utils.helpers import console, hash_password
 from ..models.user import User, Client, Marchand, Admin
 from ..models.product import Product
 
-from rich.table import Table
-from rich.prompt import Prompt
-
 class Store:
-    DATA_DIR = Path(__file__).parent.parent.parent / "data"
+    DATA_DIR = Path(__file__).parent.parent / "data"
     DATA_FILE = DATA_DIR / "data.json"
 
     def __init__(self):
         self.users: Dict[str, User] = {}
         self.current_user: Optional[User] = None
-        # Créer le dossier data s'il n'existe pas
-        self.DATA_DIR.mkdir(exist_ok=True)
         self.load_data()
 
     def load_data(self):
@@ -87,7 +83,7 @@ class Store:
                         if isinstance(user, Client) and "commandes" in user_data:
                             user.commandes = []
                             for cmd_data in user_data["commandes"]:
-                                # Recréer les détails de la commande avec les références aux produits
+                                # Recrée les détails de la commande avec les références aux produits
                                 details = []
                                 for detail_data in cmd_data["details"]:
                                     vendeur = self.users[detail_data["vendeur_email"]]
@@ -232,43 +228,43 @@ class Store:
         except Exception as e:
             console.print(f"[red]Erreur lors de la sauvegarde des données: {e}")
             
-        def register_user(self, type_user="client"):
-            console.print("[blue]Création de compte")
-            email = Prompt.ask("Email")
-            if email in self.users:
-                console.print("[red]Email déjà utilisé")
-                return None
-            
-            password = Prompt.ask("Mot de passe", password=True)
-            hashed_password = hash_password(password)  # Hash le mot de passe
-            nom = Prompt.ask("Nom")
-            prenom = Prompt.ask("Prénom")
-            telephone = Prompt.ask("Téléphone")
-            adresse = Prompt.ask("Adresse")
+    def register_user(self, type_user="client", user=None):
+        console.print("[blue]Création de compte")
+        email = Prompt.ask("Email")
+        if email in self.users:
+            console.print("[red]Email déjà utilisé")
+            return None
+        
+        password = Prompt.ask("Mot de passe", password=True)
+        hashed_password = hash_password(password)  # Hash le mot de passe
+        nom = Prompt.ask("Nom")
+        prenom = Prompt.ask("Prénom")
+        telephone = Prompt.ask("Téléphone")
+        adresse = Prompt.ask("Adresse")
 
-            if type_user == "client":
-                user = Client(email, hashed_password, nom, prenom, telephone, adresse)
-            elif type_user == "admin":
-                user = Admin(email, hashed_password, nom, prenom, telephone, adresse)
-            else:
-                user = Marchand(email, hashed_password, nom, prenom, telephone, adresse)
-            
-            self.users[email] = user
-            self.save_data()  # Sauvegarder immédiatement après création
-            console.print("[green]Compte créé avec succès!")
-            return user
+        if type_user == "client":
+            user = Client(email, hashed_password, nom, prenom, telephone, adresse)
+        elif type_user == "admin":
+            user = Admin(email, hashed_password, nom, prenom, telephone, adresse)
+        else:
+            user = Marchand(email, hashed_password, nom, prenom, telephone, adresse)
+        
+        self.users[email] = user
+        self.save_data()  # Sauvegarder immédiatement après création
+        console.print("[green]Compte créé avec succès!")
+        return user
 
     def login(self):
         email = Prompt.ask("Email")
         password = Prompt.ask("Mot de passe", password=True)
         hashed_password = hash_password(password)
         
-        if not os.path.exists('data.json'):
+        if not self.DATA_FILE.exists():
             console.print("[red]Aucun utilisateur enregistré")
             return None
-
+        
         try:
-            with open('data.json', 'r') as f:
+            with open(self.DATA_FILE, 'r') as f:
                 data = json.load(f)
                 users = data.get("users", [])
                 for user_data in users:
@@ -316,6 +312,10 @@ class Store:
         console.print("[yellow]Suppression annulée")
         return False
     
+    def get_user_by_email(self, email: str):
+        """Récupère un utilisateur par son email"""
+        return self.users.get(email)
+
     def get_product(self, product_id):
         for user in self.users.values():
             if isinstance(user, Marchand):
