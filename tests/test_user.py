@@ -1,5 +1,6 @@
 import pytest
-from src.models.user import User
+from src.models.store import Store
+from src.models.user import Admin, Client, User
 
 class TestUser:
     @pytest.fixture
@@ -60,3 +61,21 @@ class TestUser:
         # Test balance négative
         user.balance = 0.0
         assert user.balance >= 0, "La balance ne peut pas être négative"
+        
+    def test_admin_delete_user():
+        store = Store()
+        admin = Admin("admin@test.com", "password", "Admin", "Test")
+        client = Client("client@test.com", "password", "Client", "Test")
+        
+        store.users[client.email] = client
+        store.users[admin.email] = admin
+        
+        # Test suppression client
+        assert client.email in store.users
+        admin.delete_user(store, client.email)
+        assert client.email not in store.users
+        
+        # Test impossible de supprimer admin
+        assert admin.email in store.users
+        admin.delete_user(store, admin.email)
+        assert admin.email in store.users

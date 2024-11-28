@@ -555,7 +555,7 @@ class Admin(User):
         
         for user in store.users.values():
             if isinstance(user, Marchand):
-                for product in user.products[:]:  # Copie de la liste pour éviter les problèmes de modification pendant l'itération
+                for product in user.products[:]: 
                     if product.id == prod_id:
                         confirmation = Prompt.ask(
                             f"[red]Êtes-vous sûr de vouloir supprimer le produit {product.nom}? (oui/non)"

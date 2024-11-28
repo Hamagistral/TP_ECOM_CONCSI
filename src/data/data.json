@@ -18,7 +18,7 @@
             "prenom": "Hamza",
             "telephone": "0784598756",
             "adresse": "Montaudran, Toulouse 31400",
-            "balance": 501.0,
+            "balance": 361.1,
             "carte_bancaire": {
                 "numero": "9874",
                 "date_exp": "09/28"
@@ -46,6 +46,27 @@
                             "vendeur_email": "bailo@gmail.com"
                         }
                     ]
+                },
+                {
+                    "id": "CMD2",
+                    "date": "2024-11-29 00:06:06",
+                    "total": 139.9,
+                    "status": "en_attente",
+                    "client_email": "hamza@gmail.com",
+                    "client_nom": "Hamza BELGHITI",
+                    "montants_par_marchand": {
+                        "bailo@gmail.com": 139.9
+                    },
+                    "details": [
+                        {
+                            "product_id": "ZOWSOBA",
+                            "product_nom": "ZOWIE FK1-C",
+                            "product_prix": 69.95,
+                            "quantity": 2,
+                            "subtotal": 139.9,
+                            "vendeur_email": "bailo@gmail.com"
+                        }
+                    ]
                 }
             ]
         },
@@ -56,7 +77,7 @@
             "prenom": "Barry",
             "telephone": "0754893215",
             "adresse": "Empalot, Toulouse 31300",
-            "balance": 1499.0,
+            "balance": 1638.9,
             "carte_bancaire": {
                 "numero": "1234",
                 "date_exp": "07/29"
@@ -74,7 +95,7 @@
                     "nom": "ZOWIE FK1-C",
                     "description": "Souris Esports sym\u00e9trique - Poids r\u00e9duit ; c\u00e2ble en paracorde ; scroll en 24 \u00e9tapes",
                     "prix": 69.95,
-                    "quantite": 8.0,
+                    "quantite": 6.0,
                     "categorie": "Souris Gamer"
                 }
             ],
@@ -96,6 +117,27 @@
                             "product_prix": 1499.0,
                             "quantity": 1,
                             "subtotal": 1499.0,
+                            "vendeur_email": "bailo@gmail.com"
+                        }
+                    ]
+                },
+                {
+                    "id": "CMD2",
+                    "date": "2024-11-29 00:06:06",
+                    "total": 139.9,
+                    "status": "en_attente",
+                    "client_email": "hamza@gmail.com",
+                    "client_nom": "Hamza BELGHITI",
+                    "montants_par_marchand": {
+                        "bailo@gmail.com": 139.9
+                    },
+                    "details": [
+                        {
+                            "product_id": "ZOWSOBA",
+                            "product_nom": "ZOWIE FK1-C",
+                            "product_prix": 69.95,
+                            "quantity": 2,
+                            "subtotal": 139.9,
                             "vendeur_email": "bailo@gmail.com"
                         }
                     ]
