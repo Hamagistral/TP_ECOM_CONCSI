@@ -80,17 +80,17 @@ pytest -v          # Mode verbeux
 **User**: Classe de base pour tous les utilisateurs
 
 - **Attributs :** email, password, nom, prenom, telephone, adresse, balance, carte_bancaire  
-- **Méthodes :** crediter_compte(), add_carte_bancaire()
+- **Méthodes :** credit_account(), add_bank_card()
 
 **Client (hérite de User)**: Gestion des clients
 
 - **Attributs supplémentaires :** panier, commandes  
-- **Méthodes :** add_to_cart(), remove_from_cart(), passer_commande(), voir_commandes()
+- **Méthodes :** add_to_cart(), remove_from_cart(), place_order(), see_orders()
 
 **Marchand (hérite de User)**: Gestion des marchands
 
 - **Attributs supplémentaires :** products, commandes_recues
-- **Méthodes :** add_product(), view_products(), modifier_status_commande(), manage_stock()
+- **Méthodes :** add_product(), view_products(), modify_command_status(), manage_stock()
 
 **Admin (hérite de User)**: Gestion des administrateurs
 
